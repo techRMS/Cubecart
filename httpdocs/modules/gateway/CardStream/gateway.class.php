@@ -58,7 +58,7 @@ class Gateway {
 			'customerPostCode' => $this->_basket['billing_address']['postcode'],
 			'customerEmail' => $this->_basket['billing_address']['email'],
 			'customerPhone' => $this->_basket['billing_address']['phone'],
-            'merchantData' => 'system=CubeCart'
+            'merchantData' => 'CubeCart-hosted-1'
 		);
 
         if (isset($this->_module['merchant_passphrase'])) {
