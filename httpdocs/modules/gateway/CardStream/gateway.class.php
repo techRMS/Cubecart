@@ -62,7 +62,7 @@ class Gateway {
 		);
 
         if (isset($this->_module['merchant_passphrase'])) {
-            $sig_fields = http_build_query($hidden) . $this->_module['merchant_passphrase'];
+            $sig_fields = http_build_query($hidden, '', '&') . $this->_module['merchant_passphrase'];
             $hidden['signature'] = hash('SHA512', $sig_fields);
         }
 
@@ -86,7 +86,7 @@ class Gateway {
             $check = $_POST;
             unset($check['signature']);
             ksort($check);
-            $sig_check = ($_POST['signature'] == hash("SHA512", http_build_query($check) . $this->_module['merchant_passphrase']));
+            $sig_check = ($_POST['signature'] == hash("SHA512", http_build_query($check, '', '&') . $this->_module['merchant_passphrase']));
         }else{
             $sig_check = true;
         }
