@@ -53,7 +53,7 @@ class Gateway {
             'type' => 1,
 			'transactionUnique' => md5($this->_basket['cart_order_id'].time()),
 			'orderRef' => $this->_basket['cart_order_id'],
-			'redirectURL' => $GLOBALS['storeURL'].'/modules/gateway/CardStream/response_process.php',
+			'redirectURL' => $GLOBALS['storeURL'].'/index.php?_g=rm&type=gateway&cmd=process&module=CharityClear',
             'customerAddress' => $address,
 			'customerPostCode' => $this->_basket['billing_address']['postcode'],
 			'customerEmail' => $this->_basket['billing_address']['email'],
@@ -86,8 +86,10 @@ class Gateway {
             $check = $_POST;
             unset($check['signature']);
             ksort($check);
-            $sig_check = ($_POST['signature'] == hash("SHA512", http_build_query($check, '', '&') . $this->_module['merchant_passphrase']));
-        }else{
+           	$build_query =  http_build_query($check, '', '&');
+				$build_query = preg_replace('/%0D%0A|%0A%0D|%0A|%0D/i', '%0A', $build_query);
+				$sig_check = ($_POST['signature'] == hash("SHA512", $build_query. $this->_module['merchant_passphrase']));
+           }else{
             $sig_check = true;
         }
 
@@ -100,14 +102,18 @@ class Gateway {
 		$transData['gateway']		= 'CardStream';
 		$transData['order_id']		= $_POST['orderRef'];
 		$transData['trans_id']		= $_POST['xref'];
-		$transData['amount']		= ($_POST['amountReceived']>0) ? ($_POST['amountReceived']/10) : '';
+		$transData['amount']		= ($_POST['amountReceived']>0) ? ($_POST['amountReceived']/100) : '';
 		$transData['status']		= $_POST['responseMessage'];
 		$transData['customer_id']	= $order_summary['customer_id'];
 		$transData['extra']			= '';
 		$order->logTransaction($transData);
 		
+		$url = explode('/modules/gateway/CharityClear',$GLOBALS['storeURL']);
+
+			httpredir($url[0].'/index.php?_a=complete');
+			return false;
 		// ccNow doesn't send back any data at all right now so we have to leave it pending
-		httpredir(currentPage(array('_g', 'type', 'cmd', 'module'), array('_a' => 'complete')));
+		//httpredir(currentPage(array('_g', 'type', 'cmd', 'module'), array('_a' => 'complete')));
 	}
 
 	public function form() {
