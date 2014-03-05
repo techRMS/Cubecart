@@ -16,7 +16,7 @@
 				'action'	=> (filter_var($this->_module['payment_page_url'], FILTER_VALIDATE_URL)) ? $this->_module['payment_page_url'] : 'https://gateway.cardstream.com/hosted/',
 				'method'	=> 'post',
 				'target'	=> '_self',
-				'submit'	=> 'ssauto',
+				'submit'	=> 'auto',
 			);
 			return $transfer;
 		}
