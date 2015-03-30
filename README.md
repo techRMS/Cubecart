@@ -1,4 +1,4 @@
-Cubecart-Direct-Module
+Cubecart-Hosted-Module
 ======================
 
 Compatibility
