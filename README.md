@@ -4,7 +4,7 @@ Cubecart-Hosted-Module
 Compatibility
 ======================
 
-Compatible with Version 5 of CubeCart.
+Compatible with Version 5 and 6 of CubeCart.
 
 Installation Instructions
 ======================
